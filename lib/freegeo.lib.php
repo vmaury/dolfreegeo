@@ -77,10 +77,11 @@ function updateGeo(CommonObject &$object) {
 		$object->array_options['options_lat'] = $resgeo->lat;
 		$object->array_options['options_geocaddress'] = $resgeo->geocaddress;
 		//$r1 = $object->updateExtraField('lon',null,$user);
-		$r = $object->insertExtraFields();
-		//print_r($object);
-		//die("hihi $r $r1");
+	} else {
+		$object->array_options['options_geocaddress'] = 'Geocode error : '.$resgeo->error;
+		$object->array_options['options_lat'] = $object->array_options['options_lon'] = '';
 	}
+	$r = $object->insertExtraFields();
 }
 /** geocodage d'une adresse
  * 
