@@ -287,7 +287,7 @@ class modFreegeo extends DolibarrModules
 		$this->menu = array();
 		$r = 0;
 		// Add here entries to declare new menus
-		/* BEGIN MODULEBUILDER TOPMENU */
+		/* BEGIN MODULEBUILDER TOPMENU 
 		$this->menu[$r++] = array(
 			'fk_menu'=>'', // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'top', // This is a Top menu entry
@@ -302,7 +302,7 @@ class modFreegeo extends DolibarrModules
 			'perms'=>'1', // Use 'perms'=>'$user->rights->freegeo->myobject->read' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2, // 0=Menu for internal users, 1=external users, 2=both
-		);
+		);*/
 		/* END MODULEBUILDER TOPMENU */
 		/* BEGIN MODULEBUILDER LEFTMENU MYOBJECT
 		$this->menu[$r++]=array(
@@ -485,47 +485,47 @@ class modFreegeo extends DolibarrModules
 		// Create extrafields
 		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		$extrafields = new ExtraFields($this->db);
-		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'socpeople');
+		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'socpeople',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'socpeople');
+		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'socpeople',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('geocaddress', 'Adresse geoloc', 'text', '92', '', 'socpeople');
+		$raddexf = $extrafields->addExtraField('geocaddress', 'Adresse geoloc', 'text', '92', '', 'socpeople',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'societe');
+		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'societe',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'societe');
+		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'societe',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('geocaddress', 'Adresse geoloc', 'text', '92', '', 'societe');
+		$raddexf = $extrafields->addExtraField('geocaddress', 'Adresse geoloc', 'text', '92', '', 'societe',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'user');
+		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'user',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'user');
+		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'user',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('geocaddress', 'Adresse geoloc', 'text', '92', '', 'user');
+		$raddexf = $extrafields->addExtraField('geocaddress', 'Adresse geoloc', 'text', '92', '', 'user',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;

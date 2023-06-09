@@ -78,8 +78,15 @@ function updateGeo(CommonObject &$object) {
 		$object->array_options['options_geocaddress'] = $resgeo->geocaddress;
 		//$r1 = $object->updateExtraField('lon',null,$user);
 	} else {
-		$object->array_options['options_geocaddress'] = 'Geocode error : '.$resgeo->error;
-		$object->array_options['options_lat'] = $object->array_options['options_lon'] = '';
+		$resgeo = addressGeocode('', '', $object->zip, $object->town);
+		if (empty($resgeo->error)) {
+			$object->array_options['options_lon'] = $resgeo->lon;
+			$object->array_options['options_lat'] = $resgeo->lat;
+			$object->array_options['options_geocaddress'] = $resgeo->geocaddress;
+		} else {
+			$object->array_options['options_geocaddress'] = 'Geocode error : '.$resgeo->error;
+			$object->array_options['options_lat'] = $object->array_options['options_lon'] = '';
+		}
 	}
 	$r = $object->insertExtraFields();
 }
@@ -107,67 +114,69 @@ function addressGeocode($bulk, $street='', $zip='', $town='', $country='') {
 		$arg['limit'] = 1;
 		foreach ($arg as $k=>$v) $arg[$k] = $k.'='.urlencode ($v);
 		$rep->urlcalled = urlApi.implode('&',$arg);
-		$repcall = file_get_contents(urlApi.implode('&',$arg));
-		$tbrep = json_decode($repcall, true);
-		/* print_r($tbrep);	 Array (
-    [type] => FeatureCollection
-    [version] => draft
-    [features] => Array
-        (
-            [0] => Array
-                (
-                    [type] => Feature
-                    [geometry] => Array
-                        (
-                            [type] => Point
-                            [coordinates] => Array
-                                (
-                                    [0] => 2.236317
-                                    [1] => 48.940037
-                                )
+		$repcall = @file_get_contents(urlApi.implode('&',$arg));
+		if ($repcall !== false) {
+			$tbrep = json_decode($repcall, true);
+			/* print_r($tbrep);	 Array (
+		[type] => FeatureCollection
+		[version] => draft
+		[features] => Array
+			(
+				[0] => Array
+					(
+						[type] => Feature
+						[geometry] => Array
+							(
+								[type] => Point
+								[coordinates] => Array
+									(
+										[0] => 2.236317
+										[1] => 48.940037
+									)
 
-                        )
+							)
 
-                    [properties] => Array
-                        (
-                            [label] => 12ter Avenue Jean Jaures 95100 Argenteuil
-                            [score] => 0.83427116883117
-                            [housenumber] => 12ter
-                            [id] => 95018_2800_00012_ter
-                            [name] => 12ter Avenue Jean Jaures
-                            [postcode] => 95100
-                            [citycode] => 95018
-                            [x] => 644056.33
-                            [y] => 6871388.95
-                            [city] => Argenteuil
-                            [context] => 95, Val-d'Oise, Île-de-France
-                            [type] => housenumber
-                            [importance] => 0.81984
-                            [street] => Avenue Jean Jaures
-                        )
+						[properties] => Array
+							(
+								[label] => 12ter Avenue Jean Jaures 95100 Argenteuil
+								[score] => 0.83427116883117
+								[housenumber] => 12ter
+								[id] => 95018_2800_00012_ter
+								[name] => 12ter Avenue Jean Jaures
+								[postcode] => 95100
+								[citycode] => 95018
+								[x] => 644056.33
+								[y] => 6871388.95
+								[city] => Argenteuil
+								[context] => 95, Val-d'Oise, Île-de-France
+								[type] => housenumber
+								[importance] => 0.81984
+								[street] => Avenue Jean Jaures
+							)
 
-                )
+					)
 
-        )
+			)
 
-    [attribution] => BAN
-    [licence] => ETALAB-2.0
-    [query] =>  12 Ter Avenue Jean Jaures 95100 ARGENTEUIL
-    [filters] => Array
-        (
-            [postcode] => 95100
-        )
+		[attribution] => BAN
+		[licence] => ETALAB-2.0
+		[query] =>  12 Ter Avenue Jean Jaures 95100 ARGENTEUIL
+		[filters] => Array
+			(
+				[postcode] => 95100
+			)
 
-    [limit] => 1
-)*/
-		if (is_array($tbrep['features']) && count($tbrep['features']) > 0) {
-			$feat = $tbrep['features'][0];
-			$rep->lon = $feat['geometry']['coordinates'][0];
-			$rep->lat = $feat['geometry']['coordinates'][1];
-			$rep->geocaddress = $feat['properties']['label'];
-		} else $rep->error = 'erreur geocode '.$rep->urlcalled;
-	} else {
-		$rep->error = 'unupported country';
-	}
+		[limit] => 1
+	)*/
+			if (is_array($tbrep['features']) && count($tbrep['features']) > 0) {
+				$feat = $tbrep['features'][0];
+				$rep->lon = $feat['geometry']['coordinates'][0];
+				$rep->lat = $feat['geometry']['coordinates'][1];
+				$rep->geocaddress = $feat['properties']['label'];
+			} else $rep->error = 'erreur geocode '.$rep->urlcalled;
+		} else {
+			$rep->error = 'unknown address or unupported country';
+		}
+	} else $rep->error = 'address cannot be encoded';
 	return $rep;
 }
