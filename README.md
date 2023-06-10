@@ -4,28 +4,31 @@
 
 This module allows to automatically geocode adresses of thirdparties, contacts and users.
 
-For the moment, it works only in France (because it calls a frech gov API https://api-adresse.data.gouv.fr/search/?)
+For the moment, it works only in France (because it calls a french gov API https://api-adresse.data.gouv.fr/search/?)
 
-It creates 3 extrafields (lat, lon, geocaddress) in this 3 objects
+It creates 3 extrafields (lat, lon, geocaddress) in this 3 objects Societe, Contact and User.
 
 When an address is created / updated, trough triggers, the API is called, and the 3 extrafields are (eventually) updated.
 
 (@see function addressGeocode in freegeo.lib.php)
 
-geocaddress is the text address corrected/normalized by the API
+geocaddress is the text address corrected/normalized by the API 
 
 ### Bonus 1
 
-add a mysql function to calculate an approx distance in km between 2 adresses 
+a mysql function to calculate an approx distance in km between 2 adresses 
 
 (@see sql/dolibarr_allversions.sql )
 
 ### Bonus 2
 
-if you need to geocode existing addresses in yout database, have a look to zdivress/readme.md (in french) who explains how to do this
+if you need to geocode existing addresses in your database, have a look to zdivress/readme.md (in french) who explains how to do this bulk
 
+## ToDo
 
+Add a [leaflet.js](https://leafletjs.com/) map to display the points 
 
+## Dolistore
 
 Other external modules are available on [Dolistore.com](https://www.dolistore.com).
 
