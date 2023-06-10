@@ -2,11 +2,8 @@
 
 ## Features
 
-Description of the module...
+This module allows to automatically geocode adresses of thirdparties, contacts and users
 
-<!--
-![Screenshot freegeo](img/screenshot_freegeo.png?raw=true "Freegeo"){imgmd}
--->
 
 Other external modules are available on [Dolistore.com](https://www.dolistore.com).
 
