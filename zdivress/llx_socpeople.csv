@@ -1,0 +1,5 @@
+rowid;address;zip;town;fk_pays
+1;11, rue des places;87800;ST HILAIRE LES PLACES;1
+2;;;;1
+3;2 GROS  CHATEAU SAINT LO;;SAINT PEY D'ARMENS;1
+4;11 rue Philippe Lebon;87280;LIMOGES;1
