@@ -427,8 +427,8 @@ class modFreegeo extends DolibarrModules
 	public function init($options = '')
 	{
 		global $conf, $langs;
-		ini_set("display_errors", true);
-		error_reporting(E_ALL & ~E_NOTICE);
+//		ini_set("display_errors", true);
+//		error_reporting(E_ALL & ~E_NOTICE);
 		//$result = $this->_load_tables('/install/mysql/', 'freegeo');
 		$result = $this->_load_tables('/freegeo/sql/');
 		if ($result < 0) {
@@ -485,12 +485,12 @@ class modFreegeo extends DolibarrModules
 		// Create extrafields
 		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		$extrafields = new ExtraFields($this->db);
-		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'socpeople',0,0,'','',0,'',-5);
+		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'double', '90', '24,8', 'socpeople',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'socpeople',0,0,'','',0,'',-5);
+		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'double', '91', '24,8', 'socpeople',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
@@ -500,12 +500,12 @@ class modFreegeo extends DolibarrModules
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'societe',0,0,'','',0,'',-5);
+		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'double', '90', '24,8', 'societe',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'societe',0,0,'','',0,'',-5);
+		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'double', '91', '24,8', 'societe',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
@@ -515,12 +515,12 @@ class modFreegeo extends DolibarrModules
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'decimal', '90', '24,8', 'user',0,0,'','',0,'',-5);
+		$raddexf = $extrafields->addExtraField('lat', 'Latitude', 'double', '90', '24,8', 'user',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;
 		}
-		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'decimal', '91', '24,8', 'user',0,0,'','',0,'',-5);
+		$raddexf = $extrafields->addExtraField('lon', 'Longitude', 'double', '91', '24,8', 'user',0,0,'','',0,'',-5);
 		if ($raddexf <= 0) {
 			$err++;
 			$this->error .= $extrafields->error;

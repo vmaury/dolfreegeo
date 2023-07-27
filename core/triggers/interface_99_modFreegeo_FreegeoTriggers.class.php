@@ -93,8 +93,7 @@ class InterfaceFreegeoTriggers extends DolibarrTriggers
 		if (empty($conf->freegeo) || empty($conf->freegeo->enabled)) {
 			return 0; // If module is not enabled, we do nothing
 		}
-		ini_set("display_errors", true);
-				error_reporting(E_ALL & ~E_NOTICE);
+		
 		// Put here code you want to execute when a Dolibarr business events occurs.
 		// Data and type of action are stored into $object and $action
 
