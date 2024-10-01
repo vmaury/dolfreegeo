@@ -70,7 +70,7 @@ function freegeoAdminPrepareHead()
 function updateGeo(CommonObject &$object) {
 	//print_r($object);
 	$resgeo = addressGeocode('', $object->address, $object->zip, $object->town);
-	//print_r($resgeo);
+	print_r($resgeo);
 //				die();
 	if (empty($resgeo->error)) {
 		$object->array_options['options_lon'] = $resgeo->lon;
@@ -114,7 +114,34 @@ function addressGeocode($bulk, $street='', $zip='', $town='', $country='') {
 		$arg['limit'] = 1;
 		foreach ($arg as $k=>$v) $arg[$k] = $k.'='.urlencode ($v);
 		$rep->urlcalled = urlApi.implode('&',$arg);
-		$repcall = @file_get_contents(urlApi.implode('&',$arg));
+		// !!! $repcall = file_get_contents(urlApi.implode('&',$arg)); !!!ça ça marche plus chez Infoniak
+		
+		$ret = new \stdClass();
+		$ltApiRestUrl = urlApi.implode('&',$arg);
+		$ret->urlCalled = $ltApiRestUrl;
+		$crlcnx = curl_init($ltApiRestUrl);
+		curl_setopt($crlcnx, CURLOPT_RETURNTRANSFER, true);
+		//curl_setopt($crlcnx, CURLINFO_HEADER_OUT, true	);
+		curl_setopt($crlcnx, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($crlcnx, CURLOPT_HEADER, false); // c'est ça qui fait que ça crache le header
+		//curl_setopt($crlcnx, CURLOPT_POST, true);
+		//curl_setopt($crlcnx, CURLOPT_POSTFIELDS, $data);
+		//curl_setopt($crlcnx, CURLOPT_, $authEnv);
+		curl_setopt($crlcnx, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($crlcnx, CURLOPT_SSL_VERIFYPEER, 0);
+		// Set HTTP Header for POST request 
+//		curl_setopt($crlcnx, CURLOPT_HTTPHEADER, array(
+//			//'Content-Type: text/xml;charset="utf-8"',
+//			'Content-Type: application/json',
+//	 //			"Accept: text",
+//			"Cache-Control: no-cache",
+//			"Pragma: no-cache",
+//			"Content-length: " . strlen($data)
+//		));
+
+		// Submit the request
+		$repcall = curl_exec($crlcnx);
+		//print_r($repcall);
 		if ($repcall !== false) {
 			$tbrep = json_decode($repcall, true);
 			/* print_r($tbrep);	 Array (
@@ -175,8 +202,8 @@ function addressGeocode($bulk, $street='', $zip='', $town='', $country='') {
 				$rep->geocaddress = $feat['properties']['label'];
 			} else $rep->error = 'erreur geocode '.$rep->urlcalled;
 		} else {
-			$rep->error = 'unknown address or unupported country';
+			$rep->error = 'unknown address or unupported country '.curl_error($crlcnx);
 		}
-	} else $rep->error = 'address cannot be encoded';
+	} else $rep->error = 'address cannot be encoded ';
 	return $rep;
 }
