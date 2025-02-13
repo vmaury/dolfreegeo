@@ -69,26 +69,27 @@ function freegeoAdminPrepareHead()
 
 function updateGeo(CommonObject &$object) {
 	//print_r($object);
-	$resgeo = addressGeocode('', $object->address, $object->zip, $object->town);
-	print_r($resgeo);
-//				die();
-	if (empty($resgeo->error)) {
-		$object->array_options['options_lon'] = $resgeo->lon;
-		$object->array_options['options_lat'] = $resgeo->lat;
-		$object->array_options['options_geocaddress'] = $resgeo->geocaddress;
-		//$r1 = $object->updateExtraField('lon',null,$user);
-	} else {
-		$resgeo = addressGeocode('', '', $object->zip, $object->town);
+	if (trim($object->address) != '' || trim($object->zip) != '' || trim($object->town) != '') {
+		$resgeo = addressGeocode('', $object->address, $object->zip, $object->town);
+		//print_r($resgeo);
 		if (empty($resgeo->error)) {
 			$object->array_options['options_lon'] = $resgeo->lon;
 			$object->array_options['options_lat'] = $resgeo->lat;
 			$object->array_options['options_geocaddress'] = $resgeo->geocaddress;
+			//$r1 = $object->updateExtraField('lon',null,$user);
 		} else {
-			$object->array_options['options_geocaddress'] = 'Geocode error : '.$resgeo->error;
-			$object->array_options['options_lat'] = $object->array_options['options_lon'] = '';
+			$resgeo = addressGeocode('', '', $object->zip, $object->town);
+			if (empty($resgeo->error)) {
+				$object->array_options['options_lon'] = $resgeo->lon;
+				$object->array_options['options_lat'] = $resgeo->lat;
+				$object->array_options['options_geocaddress'] = $resgeo->geocaddress;
+			} else {
+				$object->array_options['options_geocaddress'] = 'Geocode error : '.$resgeo->error;
+				$object->array_options['options_lat'] = $object->array_options['options_lon'] = '';
+			}
 		}
-	}
-	$r = $object->insertExtraFields();
+		$r = $object->insertExtraFields();
+	} else return false;
 }
 /** geocodage d'une adresse
  * 
